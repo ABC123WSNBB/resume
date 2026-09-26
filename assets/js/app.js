@@ -129,7 +129,48 @@ const resume = window.RESUME_DATA;
     function initCertificateLightbox(){const box=$("#certificateLightbox"),close=$("#lightboxClose"),prev=$("#lightboxPrev"),next=$("#lightboxNext"),image=$("#lightboxImage");close.onclick=closeCertificateLightbox;prev.onclick=()=>showCertificate(certificateIndex-1);next.onclick=()=>showCertificate(certificateIndex+1);box.addEventListener("click",event=>{if(event.target===box)closeCertificateLightbox()});image.onerror=()=>toast("证书图片未找到，请检查图片文件名");document.addEventListener("keydown",event=>{if(!box.classList.contains("open"))return;if(event.key==="Escape")closeCertificateLightbox();if(event.key==="ArrowLeft")showCertificate(certificateIndex-1);if(event.key==="ArrowRight")showCertificate(certificateIndex+1)})}
     function tabs(root,groups,type){const list=el("div","tablist");list.setAttribute("role","tablist");const panels=[],buttons=[];groups.filter(g=>g.items.length).forEach((g,i)=>{const b=el("button","tab",g.label),p=el("div","panel");b.type="button";b.id=`${type}-t-${g.id}`;b.setAttribute("role","tab");b.setAttribute("aria-selected",i===0?"true":"false");b.setAttribute("aria-controls",`${type}-p-${g.id}`);b.tabIndex=i===0?0:-1;p.id=`${type}-p-${g.id}`;p.setAttribute("role","tabpanel");p.setAttribute("aria-labelledby",b.id);p.hidden=i!==0;if(type==="experience"){const box=el("div","timeline");g.items.forEach(x=>{const a=el("article","entry"),head=el("div","entry-head"),left=el("div");left.append(el("h3","",x.title),el("div","org",x.org));head.append(left);a.append(head,bullets(x.bullets));addCardScene(a,`experience-${g.id}`);box.append(a)});p.append(box)}else{const box=el("div","projects");g.items.forEach(x=>{const a=el("article","project");a.append(el("h3","",x.name),el("p","",x.result));if(x.link){const link=el("a","project-link",x.linkLabel||"查看项目 ↗");link.href=x.link;link.target="_blank";link.rel="noopener";a.append(link)}const ts=el("div","tags");x.tags.forEach(y=>ts.append(el("span","tag",y)));a.append(ts);if(Array.isArray(x.gallery)&&x.gallery.length){a.classList.add("with-gallery");const section=el("section","certificate-section"),head=el("div","certificate-head"),headText=el("div");headText.append(el("h4","","AI证书作品集"),el("span","",`${x.gallery.length} 项学习认证 · 点击图片查看大图`));head.append(headText);section.append(head);const gallery=el("div","certificate-gallery");x.gallery.forEach((src,index)=>{const button=el("button","certificate-item"),img=el("img"),error=el("div","certificate-error","图片未找到\n请检查文件名"),label=el("span","certificate-label");button.type="button";button.setAttribute("aria-label",`查看第 ${index+1} 张AI证书`);img.src=src;img.alt=`AI学习证书 ${index+1}`;img.loading="lazy";img.decoding="async";img.onerror=()=>{img.style.display="none";error.style.display="grid"};label.append(el("span","",`AI证书 ${String(index+1).padStart(2,"0")}`),el("i","","查看 ↗"));button.append(img,error,label);button.onclick=()=>openCertificateLightbox(x.gallery,index);gallery.append(button)});section.append(gallery);a.append(section)}addCardScene(a,`project-${g.id}`);box.append(a)});if(g.id==="sport")box.append(sportStage());if(g.id==="training")box.append(honorGuardStage());if(g.id==="experiment")box.append(physicsStage());p.append(box)}list.append(b);root.append(p);buttons.push(b);panels.push(p)});root.prepend(list);function active(i,focus=false){buttons.forEach((b,j)=>{b.setAttribute("aria-selected",j===i);b.tabIndex=j===i?0:-1;panels[j].hidden=j!==i});if(focus)buttons[i].focus()}buttons.forEach((b,i)=>{b.onclick=()=>active(i);b.onkeydown=e=>{let n=null;if(e.key==="ArrowRight")n=(i+1)%buttons.length;if(e.key==="ArrowLeft")n=(i-1+buttons.length)%buttons.length;if(e.key==="Home")n=0;if(e.key==="End")n=buttons.length-1;if(n!==null){e.preventDefault();active(n,true)}}})}
     function skills(){const r=$("#skillGrid");resume.skills.forEach(g=>{const a=el("article","skill");a.append(el("h3","",g.name));const box=el("div","skill-items");g.items.forEach(x=>{const n=el("span","skill-item",x[0]);n.append(el("small","",x[1]));box.append(n)});a.append(box);r.append(a)})}
-    function education(){const r=$("#educationGrid");resume.schools.forEach((s,index)=>{const e=el("article","edu");e.append(el("h3","",s.name),el("div","degree",[s.degree,`${s.start} — ${s.end}`].filter(Boolean).join(" · ")),el("p","",index===0?resume.educationText.university:resume.educationText.highSchool));r.append(e)});const h=el("article","honors");h.append(el("h3","","获奖与证书"));const ul=el("ul","award-list");resume.honors.forEach(x=>{const li=el("li"),i=el("i","","✦"),d=el("div");d.append(el("strong","",x));li.append(i,d);ul.append(li)});h.append(ul);r.append(h)}
+    function education(){
+      const r=$("#educationGrid");
+      resume.schools.forEach((s,index)=>{
+        const e=el("article","edu"),name=el("h3","",s.name);
+        e.append(name,el("div","degree",[s.degree,`${s.start} — ${s.end}`].filter(Boolean).join(" · ")),el("p","",index===0?resume.educationText.university:resume.educationText.highSchool));
+        r.append(e);
+      });
+      const h=el("article","honors");
+      h.append(el("h3","","获奖与证书"));
+      const ul=el("ul","award-list");
+      resume.honors.forEach(x=>{
+        const li=el("li"),i=el("i","","✦"),d=el("div");
+        d.append(el("strong","",x));
+        li.append(i,d);
+        ul.append(li);
+      });
+      h.append(ul);
+      if(Array.isArray(resume.educationCertificates)&&resume.educationCertificates.length){
+        const section=el("section","certificate-section"),head=el("div","certificate-head"),headText=el("div");
+        headText.append(el("h4","","军训荣誉奖状"),el("span","","点击图片查看大图"));
+        head.append(headText);
+        section.append(head);
+        const gallery=el("div","certificate-gallery");
+        resume.educationCertificates.forEach((certificate,index)=>{
+          const button=el("button","certificate-item"),img=el("img"),error=el("div","certificate-error","图片未找到\n请检查文件名"),label=el("span","certificate-label");
+          button.type="button";
+          button.setAttribute("aria-label",`查看证书：${certificate.title}`);
+          img.src=certificate.image;
+          img.alt=certificate.title;
+          img.loading="lazy";
+          img.decoding="async";
+          img.onerror=()=>{img.style.display="none";error.style.display="grid"};
+          label.append(el("span","",certificate.shortTitle),el("i","","查看 ↗"));
+          button.append(img,error,label);
+          button.onclick=()=>openCertificateLightbox(resume.educationCertificates,index);
+          gallery.append(button);
+        });
+        section.append(gallery);
+        h.append(section);
+      }
+      r.append(h);
+    }
     function initMusic(){
       const audio=$("#bgMusic"),button=$("#music");
       let timer=null,armed=false;

@@ -152,6 +152,19 @@ window.RESUME_DATA = Object.freeze({
     },
   ],
 
+  educationCertificates: [
+    {
+      id: "military-training-active",
+      order: "09",
+      title: "军事教育积极分子",
+      shortTitle: "军训积极分子",
+      category: "教育经历",
+      categoryId: "education",
+      summary: "在 2026 级学生军事教育教学期间，态度认真、训练刻苦、表现突出，被评为“军事教育积极分子”。",
+      image: "assets/certificates/military-training-active.jpg",
+    },
+  ],
+
   experience: [
     {
       id: "practice",
@@ -202,6 +215,7 @@ window.RESUME_DATA = Object.freeze({
       ]
     },
     { id: "tank-battle", label: "独立项目", items: [{ name: "沙暴能源站 · 坦克大战", result: "独立完成原创 HTML5 Canvas 坦克大战：负责玩法设计、Canvas 渲染、碰撞检测、十关战役、三类敌人 AI、技能系统与音频反馈，并完成 Netlify 部署。", tags: ["HTML5 Canvas", "原生 JavaScript", "敌人 AI", "十关战役"], link: "tank-battle/index.html", linkLabel: "试玩游戏 ↗" }] },
+    { id: "agent", label: "agent类", items: [{ name: "dl:桌面体agent程序插件", result: "正在制造的桌面体 agent 程序插件：负责基于 Vite、Three.js 与 3d-force-graph 构建三维计划网络，支持日/月计划管理、层级关系与完成进度可视化、本地数据保存、JSON 备份导入、摄像头手势控制，并提供可复用的模块化接口。", tags: ["桌面体 Agent", "程序插件"], link: "https://abc123wsnbb.github.io/dl/", linkLabel: "打开 dl ↗" }] },
     {
       id: "ai",
       label: "AI 学习",
@@ -298,6 +312,7 @@ window.RESUME_DATA = Object.freeze({
 
   honors: [
     "阿里云 AI 专项技能认证｜8 项",
+    "军事教育积极分子｜2026 年 9 月 22 日",
     "市级国旗护卫队相关比赛二等奖｜1 次",
     "全国中小学生运动会开幕仪式广州国旗护卫队代表",
     "指导下一届国旗护卫队获得市级比赛三等奖",
